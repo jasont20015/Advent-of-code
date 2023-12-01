@@ -11,21 +11,7 @@ fun main() {
     fun part1(input: List<String>): Int {
         val numbers = mutableListOf<Int>()
         for (line in input) {
-            var firstNumber = 0
-            var secondNumber = 0
-            for(c in line) {
-                if (c.isDigit()){
-                    firstNumber = c.digitToInt()*10
-                    break;
-                }
-            }
-            for(c in line.reversed()){
-                if(c.isDigit()){
-                    secondNumber = c.digitToInt()
-                    break;
-                }
-            }
-            numbers.add(firstNumber+secondNumber)
+            numbers.add(getCalibrationValue(line))
         }
         return numbers.sum()
     }
@@ -55,25 +41,11 @@ fun main() {
             ).forEach { (k: String, v: String) ->
                 newLine = newLine.replace(k, v)
             }
-
-            var firstNumber = 0
-            var secondNumber = 0
-            for(c in newLine) {
-                if (c.isDigit()){
-                    firstNumber = c.digitToInt()*10
-                    break;
-                }
-            }
-            for(c in newLine.reversed()){
-                if(c.isDigit()){
-                    secondNumber = c.digitToInt()
-                    break;
-                }
-            }
-            numbers.add(firstNumber+secondNumber)
+            numbers.add(getCalibrationValue(newLine))
         }
         return numbers.sum()
     }
+
 
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day01_test")
