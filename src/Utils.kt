@@ -64,3 +64,51 @@ fun <E> List<List<E>>.adjacentTo(position: Pair<Int, Int>): Set<E> {
     val coords = adjacentToCoords(position)
     return coords.map { (x, y) -> this[y][x] }.toSet()
 }
+//day 7
+
+enum class POWER { HIGH_CARD, ONE_PAIR, TWO_PAIRS, THREE, FULL_HOUSE, FOUR, FIVE }
+data class Hand(
+        val cards: String,
+        val rate: Int,
+        val handPower: POWER,
+        val cardsPower: List<Int> = cards.map { cardsOrder.indexOf(it) },
+        val cardsPowerPart2: List<Int> = cards.map { cardsOrderPart2.indexOf(it) },
+)
+
+fun getHands(input: List<String>, isPart2: Boolean = false) = input.map { s ->
+    s.split(" ").let { Hand(it[0], it[1].toInt(), if (isPart2) getHandPowerPart2(it[0]) else getPower(it[0])) }
+}
+
+fun getPower(cards: String): POWER = cards.groupBy { it }.let { map ->
+    when (map.size) {
+        1 -> POWER.FIVE
+        2 -> if (map.values.any { it.size == 4 }) POWER.FOUR else POWER.FULL_HOUSE
+        3 -> if (map.values.any { it.size == 3 }) POWER.THREE else POWER.TWO_PAIRS
+        4 -> POWER.ONE_PAIR
+        else -> POWER.HIGH_CARD
+    }
+}
+
+fun getHandPowerPart2(cards: String): POWER {
+    if ('J' !in cards) return getPower(cards)
+    return cardsOrderPart2.asSequence().map { c -> getPower(cards.replace('J', c)) }.maxByOrNull { it.ordinal }
+            ?: POWER.HIGH_CARD
+}
+
+fun getSortedList(hands: List<Hand>, isPart2: Boolean = false): List<Hand> {
+    return hands.sortedWith(
+            compareBy(
+                    { it.handPower },
+                    { if (isPart2) it.cardsPowerPart2[0] else it.cardsPower[0] },
+                    { if (isPart2) it.cardsPowerPart2[1] else it.cardsPower[1] },
+                    { if (isPart2) it.cardsPowerPart2[2] else it.cardsPower[2] },
+                    { if (isPart2) it.cardsPowerPart2[3] else it.cardsPower[3] },
+                    { if (isPart2) it.cardsPowerPart2[4] else it.cardsPower[4] },
+            )
+    )
+}
+fun List<Hand>.customSum() = this.withIndex().sumOf { (index, it) -> it.rate * (index + 1) }
+
+const val cardsOrder = "23456789TJQKA"
+const val cardsOrderPart2 = "J23456789TQKA"
+
