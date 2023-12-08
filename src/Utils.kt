@@ -2,6 +2,7 @@ import java.math.BigInteger
 import java.security.MessageDigest
 import kotlin.io.path.Path
 import kotlin.io.path.readLines
+import java.lang.Math.multiplyExact
 
 /**
  * Reads lines from the given input txt file.
@@ -112,3 +113,21 @@ fun List<Hand>.customSum() = this.withIndex().sumOf { (index, it) -> it.rate * (
 const val cardsOrder = "23456789TJQKA"
 const val cardsOrderPart2 = "J23456789TQKA"
 
+//day 8
+fun greatestCommonDenominator(a: Long, b: Long): Long {
+    var x = if (a > 0) a else -a
+    var y = if (b > 0) b else -b
+
+    while (y != 0L) {
+        val temp = y
+        y = x % y
+        x = temp
+    }
+    return x
+}
+fun leastCommonMultiple(a: Long, b: Long): Long = multiplyExact(a, b) / greatestCommonDenominator(a, b)
+
+
+fun Iterable<Long>.leastCommonMultipleLong(): Long = reduce(::leastCommonMultiple)
+
+fun Iterable<Int>.leastCommonMultipleInt(): Long = map(Int::toLong).leastCommonMultipleLong()
