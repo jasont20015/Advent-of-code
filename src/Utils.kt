@@ -131,3 +131,24 @@ fun leastCommonMultiple(a: Long, b: Long): Long = multiplyExact(a, b) / greatest
 fun Iterable<Long>.leastCommonMultipleLong(): Long = reduce(::leastCommonMultiple)
 
 fun Iterable<Int>.leastCommonMultipleInt(): Long = map(Int::toLong).leastCommonMultipleLong()
+
+//Day 10
+typealias Position = Pair<Int, Int>
+
+enum class cardinalDirection {
+    NORTH, EAST, SOUTH, WEST
+}
+fun cardinalDirection.toPosition(): Position = when (this){
+    cardinalDirection.NORTH -> -1 to 0
+    cardinalDirection.EAST -> 0 to 1
+    cardinalDirection.SOUTH -> 1 to 0
+    cardinalDirection.WEST -> 0 to -1
+}
+fun cardinalDirection.opposite(): cardinalDirection = when(this){
+    cardinalDirection.NORTH -> cardinalDirection.SOUTH
+    cardinalDirection.EAST -> cardinalDirection.WEST
+    cardinalDirection.SOUTH -> cardinalDirection.NORTH
+    cardinalDirection.WEST -> cardinalDirection.EAST
+}
+operator fun Position.plus(other: Position): Position =
+        first + other.first to second + other.second
