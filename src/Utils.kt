@@ -152,3 +152,15 @@ fun cardinalDirection.opposite(): cardinalDirection = when(this){
 }
 operator fun Position.plus(other: Position): Position =
         first + other.first to second + other.second
+
+//day 13
+
+fun String.getDifferences(other: String): Int {
+    if (this.length != other.length) {
+        throw IllegalArgumentException("Input strings must have the same length")
+    }
+
+    return this.indices.count { i ->
+        this[i] != other[i]
+    }
+}
