@@ -73,18 +73,18 @@ fun main() {
         var total = 0L
         for(section in sectionsSplit){
             val sectionList = section.split("\n")
-            total += getSplitPart2(sectionList)
+            total += getSplitPart2(sectionList)*100
             transposed.add(transpose(sectionList))
         }
         for(section in transposed){
             val sectionList = section.split("\n")
-            total += getSplitPart2(sectionList)*100
+            total += getSplitPart2(sectionList)
         }
         return total
     }
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day13_test").joinToString("\n");
-    check(part1(testInput) == 405L)
+    check(part2(testInput) == 400L)
     
     val input = readInput("Day13").joinToString("\n");
     println(part1(input))
