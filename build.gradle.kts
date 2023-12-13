@@ -27,16 +27,16 @@ task("generateNextDay") {
         File("$projectDir/src", "Day$newDayNum.kt").writeText(
                 """
 fun main() {
-    fun part1(input: List<String>): Int {
-        return 0
+    fun part1(input: List<String>): Long {
+        return 0L
     }
-    fun part2(input: List<String>): Int {
-        return 0
+    fun part2(input: List<String>): Long {
+        return 0L
     }
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day${newDayNum}_test")
-    check(part1(testInput) == 0)
-    
+    check(part1(testInput) == 0L)
+    check(part2(testInput) == 0L)
     val input = readInput("Day$newDayNum")
     println(part1(input))
     println(part2(input))
