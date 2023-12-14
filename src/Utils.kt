@@ -164,3 +164,37 @@ fun String.getDifferences(other: String): Int {
         this[i] != other[i]
     }
 }
+
+enum class Cardinal(val relativePos: Pair<Int, Int>) {
+    NORTH(-1 to 0),
+    EAST(0 to 1),
+    SOUTH(1 to 0),
+    WEST(0 to -1);
+
+    companion object {
+        val diagonals = listOf(NORTH to WEST, NORTH to EAST, SOUTH to WEST, SOUTH to EAST)
+    }
+
+    fun of(pos: Pair<Int, Int>): Pair<Int, Int> {
+        return pos + relativePos
+    }
+
+    fun turn(direction: Turn): Cardinal {
+        return when (direction) {
+            Turn.RIGHT -> Cardinal.entries[(this.ordinal + 1) % 4]
+            Turn.LEFT -> Cardinal.entries[(this.ordinal - 1).mod(4)]
+        }
+    }
+}
+enum class Turn {
+    LEFT, RIGHT;
+    companion object {
+        fun fromChar(c: Char): Turn {
+            return when (c) {
+                'L' -> LEFT
+                'R' -> RIGHT
+                else -> error("$c is not a turn indicator")
+            }
+        }
+    }
+}
