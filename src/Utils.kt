@@ -166,6 +166,8 @@ fun String.getDifferences(other: String): Int {
 }
 
 enum class Cardinal(val relativePos: Pair<Int, Int>) {
+
+
     NORTH(-1 to 0),
     EAST(0 to 1),
     SOUTH(1 to 0),
@@ -198,3 +200,18 @@ enum class Turn {
         }
     }
 }
+//day 17
+val NORTH = -1 to 0
+val EAST = 0 to 1
+val SOUTH = 1 to 0
+val WEST = 0 to -1
+enum class Direction(val position: Pair<Int, Int>) {
+    N(NORTH), E(EAST), S(SOUTH), W(WEST);
+    operator fun not() = Direction.entries - this
+    operator fun unaryMinus() = Direction.entries[(ordinal + 2) % 4]
+    val perpendicular by lazy { listOf(Direction.entries[(ordinal + 1) % 4], Direction.entries[(ordinal + 3) % 4]) }
+}
+
+fun Pair<Int, Int>.rotRight() = -second to first
+fun Pair<Int,Int>.rotLeft() = second to -first
+fun Pair<Int, Int>.perpendicular() = sequenceOf(rotLeft(), rotRight())
