@@ -126,7 +126,14 @@ fun greatestCommonDenominator(a: Long, b: Long): Long {
     return x
 }
 fun leastCommonMultiple(a: Long, b: Long): Long = multiplyExact(a, b) / greatestCommonDenominator(a, b)
-
+fun leastCommonMultiple(nums: List<Long>): Long {
+    val sorted = nums.sortedDescending()
+    var leastCommonMultiple = nums[0]
+    for (num in nums) {
+        leastCommonMultiple = leastCommonMultiple(leastCommonMultiple, num)
+    }
+    return leastCommonMultiple
+}
 
 fun Iterable<Long>.leastCommonMultipleLong(): Long = reduce(::leastCommonMultiple)
 

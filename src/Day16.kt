@@ -1,25 +1,25 @@
-data class Point2D(val x: Int, val y: Int) {
-    fun neighbours(): List<Point2D> {
+data class Point2D1(val x: Int, val y: Int) {
+    fun neighbours(): List<Point2D1> {
         return listOf(
-                Point2D(x - 1, y),
-                Point2D(x + 1, y),
-                Point2D(x, y - 1),
-                Point2D(x, y + 1),
+                Point2D1(x - 1, y),
+                Point2D1(x + 1, y),
+                Point2D1(x, y - 1),
+                Point2D1(x, y + 1),
         )
     }
 
-    operator fun plus(other: Point2D): Point2D = Point2D(x + other.x, y + other.y)
+    operator fun plus(other: Point2D1): Point2D1 = Point2D1(x + other.x, y + other.y)
 
     companion object {
-        val NORTH = Point2D(0, -1)
-        val EAST = Point2D(1, 0)
-        val SOUTH = Point2D(0, 1)
-        val WEST = Point2D(-1, 0)
+        val NORTH = Point2D1(0, -1)
+        val EAST = Point2D1(1, 0)
+        val SOUTH = Point2D1(0, 1)
+        val WEST = Point2D1(-1, 0)
     }
 }
 
 fun main() {
-    data class Beam(val point: Point2D, val dir: Point2D)
+    data class Beam(val point: Point2D1, val dir: Point2D1)
 
     fun score(grid: Array<CharArray>, startingBeam: Beam): Int {
         val seen = mutableSetOf<Beam>()
@@ -36,15 +36,15 @@ fun main() {
                     break
                 }
                 when (grid[nextPoint.y][nextPoint.x]) {
-                    '/'  -> nextDir = Point2D(-nextDir.y, -nextDir.x)
-                    '\\' -> nextDir = Point2D(nextDir.y, nextDir.x)
+                    '/'  -> nextDir = Point2D1(-nextDir.y, -nextDir.x)
+                    '\\' -> nextDir = Point2D1(nextDir.y, nextDir.x)
                     '-'  -> if (nextDir.y != 0) {
-                        nextDir = Point2D.EAST
-                        queue.add(Beam(nextPoint, Point2D.WEST))
+                        nextDir = Point2D1.EAST
+                        queue.add(Beam(nextPoint, Point2D1.WEST))
                     }
                     '|'  -> if (nextDir.x != 0) {
-                        nextDir = Point2D.NORTH
-                        queue.add(Beam(nextPoint, Point2D.SOUTH))
+                        nextDir = Point2D1.NORTH
+                        queue.add(Beam(nextPoint, Point2D1.SOUTH))
                     }
                 }
                 current = Beam(nextPoint, nextDir)
@@ -58,16 +58,16 @@ fun main() {
 
     fun part1(input: List<String>): Long {
         val grid = input.map { it.toCharArray() }.toTypedArray()
-        val beam = Beam(Point2D(-1, 0), Point2D.EAST)
+        val beam = Beam(Point2D1(-1, 0), Point2D1.EAST)
         return score(grid, beam).toLong()
     }
     fun part2(input: List<String>): Long {
         val grid = input.map { it.toCharArray() }.toTypedArray()
 
-        val top = grid.first().indices.map { Beam(Point2D(it, -1), Point2D.SOUTH) }
-        val bottom = grid.first().indices.map { Beam(Point2D(it, grid.size), Point2D.NORTH) }
-        val left = grid.indices.map { Beam(Point2D(-1, it), Point2D.EAST) }
-        val right = grid.indices.map { Beam(Point2D(grid.first().size, it), Point2D.WEST) }
+        val top = grid.first().indices.map { Beam(Point2D1(it, -1), Point2D1.SOUTH) }
+        val bottom = grid.first().indices.map { Beam(Point2D1(it, grid.size), Point2D1.NORTH) }
+        val left = grid.indices.map { Beam(Point2D1(-1, it), Point2D1.EAST) }
+        val right = grid.indices.map { Beam(Point2D1(grid.first().size, it), Point2D1.WEST) }
 
         return (top + bottom + left + right).maxOf { score(grid, it) }.toLong()
     }
