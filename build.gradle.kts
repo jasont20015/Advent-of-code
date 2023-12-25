@@ -13,7 +13,13 @@ tasks {
         gradleVersion = "8.5"
     }
 }
-
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+dependencies {
+    implementation("org.jgrapht:jgrapht-core:1.5.2")
+}
 
 task("generateNextDay") {
     doLast {
